@@ -1,8 +1,9 @@
 import React from 'react';
 import Grid from "@material-ui/core/Grid";
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import RegisterUserForm from "../components/RegisterUserForm";
 import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -10,13 +11,19 @@ const useStyles = makeStyles((theme: Theme) =>
             minHeight: '100vh',
         },
 
-        formContainer: {
+        mainContainer: {
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             flexFlow: 'column',
             paddingTop: 50,
-            paddingBottom: 50
+            paddingBottom: 25
+        },
+        divider: {
+            marginTop: 50,
+            width: '100%',
+            backgroundColor: '#aaa',
+            marginBottom: 25
         }
     }),
 );
@@ -28,8 +35,21 @@ const Home: React.FC = () => {
         <>
             <Grid container className={classes.root}>
                 <Grid item xs={2} sm={4}/>
-                <Grid item xs={8} sm={4} className={classes.formContainer}>
-                    <RegisterUserForm/>
+                <Grid item xs={8} sm={4} className={classes.mainContainer}>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <RegisterUserForm/>
+                        </Grid>
+                        <Grid xs={12}>
+                            <Divider variant="fullWidth" className={classes.divider}/>
+                            <Typography variant="body1" align="center">
+                                Copyright © 2020. All rights reserved
+                            </Typography>
+                            <Typography variant="body1" align="center">
+                                Made with love by <a href="http://eaglestack.azurewebsites.net/">Eaglestack</a>
+                            </Typography>
+                        </Grid>
+                    </Grid>
                 </Grid>
                 <Grid item xs={2} sm={4}/>
             </Grid>

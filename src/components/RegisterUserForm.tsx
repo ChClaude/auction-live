@@ -9,6 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import clsx from "clsx";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -25,6 +26,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
         formControl: {
             width: '100%',
+        },
+
+        loginContainer: {
+            display: 'flex',
+            alignItems: 'baseline'
         }
     }),
 );
@@ -45,10 +51,10 @@ const RegisterUserForm: React.FC = () => {
 
     return (
         <>
-            <Typography variant="h4">
+            <Typography variant="h4" align="center">
                 Champion AUCTIONEERS
             </Typography>
-            <Typography variant="h6">
+            <Typography variant="h6" align="center">
                 Get Started Below
             </Typography>
             <Formik
@@ -170,16 +176,17 @@ const RegisterUserForm: React.FC = () => {
                             as="div"
                         >
                             {({field}: FieldProps) => (
-                            <FormControl variant="filled" className={clsx(classes.formControl, classes.textField)} required>
-                                <InputLabel>Account Type</InputLabel>
-                                <Select
-                                    {...field}
-                                    labelId="account type"
-                                >
-                                    <MenuItem value="check">Check</MenuItem>
-                                    <MenuItem value="savings">Savings</MenuItem>
-                                </Select>
-                            </FormControl>
+                                <FormControl variant="filled" className={clsx(classes.formControl, classes.textField)}
+                                             required>
+                                    <InputLabel>Account Type</InputLabel>
+                                    <Select
+                                        {...field}
+                                        labelId="account type"
+                                    >
+                                        <MenuItem value="check">Check</MenuItem>
+                                        <MenuItem value="savings">Savings</MenuItem>
+                                    </Select>
+                                </FormControl>
                             )}
                         </Field>
                         <ErrorMessage name="accountType" component="div"/>
@@ -240,6 +247,14 @@ const RegisterUserForm: React.FC = () => {
                     </Form>
                 )}
             </Formik>
+            <Grid container style={{marginTop: 10}}>
+                <Grid item xs={6} className={classes.loginContainer}>
+                    <Typography variant="body1" color="secondary" style={{marginRight: 10}}>or</Typography>
+                    <Button variant="contained" color="secondary" type="submit">
+                        Log in
+                    </Button>
+                </Grid>
+            </Grid>
         </>
     );
 };
