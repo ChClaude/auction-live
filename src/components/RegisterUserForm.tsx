@@ -38,16 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const RegisterUserForm: React.FC = () => {
     const classes = useStyles();
 
-    /*const handleOnRegister: React.FormEventHandler<HTMLFormElement> = (event) => {
-        event.preventDefault();
-        console.log(event);
-    };*/
-
     const handleOnRegister = () => console.log("register");
-
-    // const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    //     console.log(event);
-    // };
 
     return (
         <>
@@ -58,7 +49,9 @@ const RegisterUserForm: React.FC = () => {
                 Get Started Below
             </Typography>
             <Formik
-                initialValues={{username: '', firstname: '', lastname: '', cellphone: ''}}
+                initialValues={{username: '', firstname: '', lastname: '', cellphone: '', email: '',
+                    bankName: '', accountType: '', accountNumber: '', password: '', confirmPassword: ''
+                }}
 
                 validate={values => {
                     console.log(values);
@@ -92,7 +85,7 @@ const RegisterUserForm: React.FC = () => {
                         <ErrorMessage name="username" component="div"/>
 
                         <Field
-                            name="firsname"
+                            name="firstname"
                         >
                             {({field}: FieldProps) => (
                                 <TextField
