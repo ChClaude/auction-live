@@ -1,11 +1,9 @@
-import React from 'react';
+import React from "react";
 
-const Header: React.FC = () => {
-    return (
-        <div>
-            Header
-        </div>
-    );
-};
+const Header: React.FC = () => (
+  <div>
+    Header
+  </div>
+);
 
 export default Header;

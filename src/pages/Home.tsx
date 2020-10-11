@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
-import RegisterUserForm from "../components/RegisterUserForm";
+import SignUpForm from "../components/SignUpForm";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -36,7 +36,7 @@ const Home: React.FC = () => {
         <Grid item xs={8} sm={6} className={classes.mainContainer}>
           <Grid container>
             <Grid item xs={12}>
-              <RegisterUserForm />
+              <SignUpForm />
             </Grid>
             <Grid xs={12}>
               <Divider variant="fullWidth" className={classes.divider} />

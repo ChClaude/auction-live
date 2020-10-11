@@ -12,6 +12,7 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import clsx from "clsx";
 import Grid from "@material-ui/core/Grid";
+import * as Yup from "yup";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -35,12 +36,47 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const validate = {};
+const SignupSchema = Yup.object().shape({
+  username: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  firstname: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  lastname: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  email: Yup.string().email("Invalid email").required("Required"),
+  cellphone: Yup.string()
+    .min(3, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  bankName: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  accountType: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  accountNumber: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  password: Yup.string()
+    .min(2, "Your password is too Short!")
+    .max(50, "Your password is too Long!")
+    .required("Required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")])
+    .required(),
+});
 
-const RegisterUserForm: React.FC = () => {
+const SignUpForm: React.FC = () => {
   const classes = useStyles();
-
-  const handleOnRegister = () => console.log("register");
 
   return (
     <>
@@ -63,19 +99,15 @@ const RegisterUserForm: React.FC = () => {
           password: "",
           confirmPassword: "",
         }}
-        validate={(values) => {
-          console.log(values);
-        }}
+        validationSchema={SignupSchema}
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(() => {
             alert(JSON.stringify(values, null, 2));
             setSubmitting(false);
           }, 400);
-
-          handleOnRegister();
         }}
       >
-        {({ isSubmitting }) => (
+        {({ errors, touched }) => (
           <Form className={classes.root}>
             <Field
               name="username"
@@ -264,4 +296,4 @@ const RegisterUserForm: React.FC = () => {
   );
 };
 
-export default RegisterUserForm;
+export default SignUpForm;
