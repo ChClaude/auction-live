@@ -38,7 +38,7 @@ const Home: React.FC = () => {
             <Grid item xs={12}>
               <SignUpForm />
             </Grid>
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <Divider variant="fullWidth" className={classes.divider} />
               <Typography variant="body1" align="center">
                 Copyright © 2020. All rights reserved

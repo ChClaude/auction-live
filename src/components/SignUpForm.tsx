@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import {
-  ErrorMessage, Field, FieldProps, Form, Formik,
+  Field, FieldProps, Form, Formik,
 } from "formik";
 import { FormControl } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -13,6 +13,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import clsx from "clsx";
 import Grid from "@material-ui/core/Grid";
 import * as Yup from "yup";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -40,43 +41,49 @@ const SignupSchema = Yup.object().shape({
   username: Yup.string()
     .min(2, "Too Short!")
     .max(50, "Too Long!")
+    // .matches(/^[A-Z]i/, "The username must contain alphabetical letters")
     .required("Required"),
   firstname: Yup.string()
     .min(2, "Too Short!")
     .max(50, "Too Long!")
+    // .matches(/[A-Z]i/, "The firstname must contain alphabetical letters")
     .required("Required"),
   lastname: Yup.string()
     .min(2, "Too Short!")
     .max(50, "Too Long!")
+    // .matches(/[A-Z]i/, "The lastname must contain alphabetical letters")
     .required("Required"),
   email: Yup.string().email("Invalid email").required("Required"),
   cellphone: Yup.string()
     .min(3, "Too Short!")
     .max(50, "Too Long!")
+    .matches(/[0-9]/, "The cellphone must contain numbers")
     .required("Required"),
   bankName: Yup.string()
     .min(2, "Too Short!")
     .max(50, "Too Long!")
+    // .matches(/[A-Z]i/, "The bank name must contain alphabetical letters")
     .required("Required"),
-  accountType: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
+  accountType: Yup.mixed()
+    .oneOf(["check", "savings"], "The account type must be either check or savings")
+    .required("The account type is required"),
   accountNumber: Yup.string()
-    .min(2, "Too Short!")
+    .min(4, "Too Short!")
     .max(50, "Too Long!")
+    // .matches(/[0-9]/, "The account number must contain alphabetical letters")
     .required("Required"),
   password: Yup.string()
-    .min(2, "Your password is too Short!")
+    .min(5, "Your password is too Short!")
     .max(50, "Your password is too Long!")
     .required("Required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")])
-    .required(),
+    .required("Required"),
 });
 
 const SignUpForm: React.FC = () => {
   const classes = useStyles();
+  console.log(process.env.REACT_APP_VAR);
 
   return (
     <>
@@ -94,20 +101,18 @@ const SignUpForm: React.FC = () => {
           cellphone: "",
           email: "",
           bankName: "",
-          accountType: "",
+          accountType: "check",
           accountNumber: "",
           password: "",
           confirmPassword: "",
         }}
         validationSchema={SignupSchema}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
+          console.log(values);
+          setSubmitting(false);
         }}
       >
-        {({ errors, touched }) => (
+        {({ errors }) => (
           <Form className={classes.root}>
             <Field
               name="username"
@@ -119,11 +124,12 @@ const SignUpForm: React.FC = () => {
                   type="text"
                   className={classes.textField}
                   variant="filled"
+                  error={!!errors.username}
+                  helperText={errors.username}
                   required
                 />
               )}
             </Field>
-            <ErrorMessage name="username" component="div" />
 
             <Field
               name="firstname"
@@ -135,11 +141,12 @@ const SignUpForm: React.FC = () => {
                   type="text"
                   variant="filled"
                   className={classes.textField}
+                  error={!!errors.firstname}
+                  helperText={errors.firstname}
                   required
                 />
               )}
             </Field>
-            <ErrorMessage name="firstname" component="div" />
 
             <Field
               name="lastname"
@@ -151,11 +158,12 @@ const SignUpForm: React.FC = () => {
                   type="text"
                   variant="filled"
                   className={classes.textField}
+                  error={!!errors.lastname}
+                  helperText={errors.lastname}
                   required
                 />
               )}
             </Field>
-            <ErrorMessage name="lastname" component="div" />
 
             <Field
               name="cellphone"
@@ -167,11 +175,12 @@ const SignUpForm: React.FC = () => {
                   type="tel"
                   variant="filled"
                   className={classes.textField}
+                  error={!!errors.cellphone}
+                  helperText={errors.cellphone}
                   required
                 />
               )}
             </Field>
-            <ErrorMessage name="cellphone" component="div" />
 
             <Field
               name="email"
@@ -183,11 +192,12 @@ const SignUpForm: React.FC = () => {
                   type="email"
                   variant="filled"
                   className={classes.textField}
+                  error={!!errors.email}
+                  helperText={errors.email}
                   required
                 />
               )}
             </Field>
-            <ErrorMessage name="email" component="div" />
 
             <Field
               name="bankName"
@@ -199,15 +209,15 @@ const SignUpForm: React.FC = () => {
                   type="text"
                   variant="filled"
                   className={classes.textField}
+                  error={!!errors.bankName}
+                  helperText={errors.bankName}
                   required
                 />
               )}
             </Field>
-            <ErrorMessage name="bankName" component="div" />
 
             <Field
               name="accountType"
-              as="div"
             >
               {({ field }: FieldProps) => (
                 <FormControl
@@ -218,15 +228,16 @@ const SignUpForm: React.FC = () => {
                   <InputLabel>Account Type</InputLabel>
                   <Select
                     {...field}
+                    error={!!errors.accountType}
                     labelId="account type"
                   >
                     <MenuItem value="check">Check</MenuItem>
                     <MenuItem value="savings">Savings</MenuItem>
                   </Select>
+                  <FormHelperText>{errors.accountType}</FormHelperText>
                 </FormControl>
               )}
             </Field>
-            <ErrorMessage name="accountType" component="div" />
 
             <Field
               name="accountNumber"
@@ -238,11 +249,12 @@ const SignUpForm: React.FC = () => {
                   type="text"
                   className={classes.textField}
                   variant="filled"
+                  error={!!errors.accountNumber}
+                  helperText={errors.accountNumber}
                   required
                 />
               )}
             </Field>
-            <ErrorMessage name="accountNumber" component="div" />
 
             <Field
               name="password"
@@ -251,15 +263,16 @@ const SignUpForm: React.FC = () => {
                 <TextField
                   {...field}
                   label="Password"
+                  helperText={errors.password}
                   type="password"
                   autoComplete="new-password"
-                  className={classes.textField}
                   variant="filled"
+                  error={!!errors.password}
+                  className={classes.textField}
                   required
                 />
               )}
             </Field>
-            <ErrorMessage name="password" component="div" />
 
             <Field
               name="confirmPassword"
@@ -272,11 +285,12 @@ const SignUpForm: React.FC = () => {
                   autoComplete="new-password"
                   className={classes.textField}
                   variant="filled"
+                  error={!!errors.confirmPassword}
+                  helperText={errors.confirmPassword}
                   required
                 />
               )}
             </Field>
-            <ErrorMessage name="confirmPassword" component="div" />
 
             <Button variant="contained" color="primary" type="submit">
               Register

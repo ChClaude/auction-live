@@ -3,6 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import firebase from "./firebase";
 
 const App: React.FC = () => (
   <>
