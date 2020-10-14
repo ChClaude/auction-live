@@ -14,6 +14,7 @@ import clsx from "clsx";
 import Grid from "@material-ui/core/Grid";
 import * as Yup from "yup";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import { Link as RouterLink } from "react-router-dom";
 import { auth, db } from "../firebase";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -37,10 +38,6 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     alignItems: "baseline",
   },
 }));
-
-type SignUpFormType = {
-  onSignUp: () => void;
-};
 
 const SignupSchema = Yup.object().shape({
   username: Yup.string()
@@ -86,8 +83,9 @@ const SignupSchema = Yup.object().shape({
     .required("Required"),
 });
 
-const SignUpForm: React.FC<SignUpFormType> = ({ onSignUp }: SignUpFormType) => {
+const SignUpForm: React.FC = () => {
   const classes = useStyles();
+
   const initialValues = {
     username: "",
     firstname: "",
@@ -138,7 +136,6 @@ const SignUpForm: React.FC<SignUpFormType> = ({ onSignUp }: SignUpFormType) => {
             values: initialValues,
           });
           setSubmitting(false);
-          onSignUp();
         }}
       >
         {({ errors }) => (
@@ -330,8 +327,10 @@ const SignUpForm: React.FC<SignUpFormType> = ({ onSignUp }: SignUpFormType) => {
       <Grid container style={{ marginTop: 10 }}>
         <Grid item xs={6} className={classes.loginContainer}>
           <Typography variant="body1" color="secondary" style={{ marginRight: 10 }}>or</Typography>
-          <Button variant="contained" color="secondary" type="submit">
-            Log in
+          <Button variant="contained" onClick={(event: React.SyntheticEvent) => event.preventDefault()}>
+            <RouterLink to="/login">
+              Log in
+            </RouterLink>
           </Button>
         </Grid>
       </Grid>

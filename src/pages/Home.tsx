@@ -4,6 +4,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import SignUpForm from "../components/SignUpForm";
+import Footer from "../components/Footer";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -18,19 +19,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     paddingTop: 50,
     paddingBottom: 25,
   },
-  divider: {
-    marginTop: 50,
-    width: "100%",
-    backgroundColor: "#aaa",
-    marginBottom: 25,
-  },
 }));
 
-type HomeType = {
-  onSignUp: () => void;
-};
-
-const Home: React.FC<HomeType> = ({ onSignUp }: HomeType) => {
+const Home: React.FC = () => {
   const classes = useStyles();
 
   return (
@@ -40,18 +31,10 @@ const Home: React.FC<HomeType> = ({ onSignUp }: HomeType) => {
         <Grid item xs={8} sm={6} className={classes.mainContainer}>
           <Grid container>
             <Grid item xs={12}>
-              <SignUpForm onSignUp={onSignUp} />
+              <SignUpForm />
             </Grid>
             <Grid item xs={12}>
-              <Divider variant="fullWidth" className={classes.divider} />
-              <Typography variant="body1" align="center">
-                Copyright © 2020. All rights reserved
-              </Typography>
-              <Typography variant="body1" align="center">
-                Made with love by
-                {" "}
-                <a href="http://eaglestack.azurewebsites.net/">Eaglestack</a>
-              </Typography>
+              <Footer />
             </Grid>
           </Grid>
         </Grid>
