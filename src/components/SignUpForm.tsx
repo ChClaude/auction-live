@@ -14,6 +14,7 @@ import clsx from "clsx";
 import Grid from "@material-ui/core/Grid";
 import * as Yup from "yup";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import { auth, db } from "../firebase";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -36,6 +37,10 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     alignItems: "baseline",
   },
 }));
+
+type SignUpFormType = {
+  onSignUp: () => void;
+};
 
 const SignupSchema = Yup.object().shape({
   username: Yup.string()
@@ -77,13 +82,24 @@ const SignupSchema = Yup.object().shape({
     .max(50, "Your password is too Long!")
     .required("Required"),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")])
+    .oneOf([Yup.ref("password")], "The passwords must match")
     .required("Required"),
 });
 
-const SignUpForm: React.FC = () => {
+const SignUpForm: React.FC<SignUpFormType> = ({ onSignUp }: SignUpFormType) => {
   const classes = useStyles();
-  console.log(process.env.REACT_APP_VAR);
+  const initialValues = {
+    username: "",
+    firstname: "",
+    lastname: "",
+    cellphone: "",
+    email: "",
+    bankName: "",
+    accountType: "check",
+    accountNumber: "",
+    password: "",
+    confirmPassword: "",
+  };
 
   return (
     <>
@@ -94,22 +110,35 @@ const SignUpForm: React.FC = () => {
         Get Started Below
       </Typography>
       <Formik
-        initialValues={{
-          username: "",
-          firstname: "",
-          lastname: "",
-          cellphone: "",
-          email: "",
-          bankName: "",
-          accountType: "check",
-          accountNumber: "",
-          password: "",
-          confirmPassword: "",
-        }}
+        initialValues={initialValues}
         validationSchema={SignupSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          console.log(values);
+        onSubmit={(values, { setSubmitting, resetForm }) => {
+          const user = {
+            username: values.username,
+            firstname: values.firstname,
+            lastname: values.lastname,
+            cellphone: values.cellphone,
+            email: values.email,
+            bankName: values.bankName,
+            accountType: values.accountType,
+            accountNumber: values.accountNumber,
+          };
+
+          auth.createUserWithEmailAndPassword(values.email, values.password)
+            .then(() => {
+              db.collection("users").doc(values.username)
+                .set(user)
+                .catch((err) => console.error(err));
+            })
+            .catch((authError: any) => {
+              console.error(`${authError.message} with code ${authError.code}`); // TODO ADD React Toastify
+            });
+
+          resetForm({
+            values: initialValues,
+          });
           setSubmitting(false);
+          onSignUp();
         }}
       >
         {({ errors }) => (

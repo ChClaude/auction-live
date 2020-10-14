@@ -26,7 +26,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const Home: React.FC = () => {
+type HomeType = {
+  onSignUp: () => void;
+};
+
+const Home: React.FC<HomeType> = ({ onSignUp }: HomeType) => {
   const classes = useStyles();
 
   return (
@@ -36,7 +40,7 @@ const Home: React.FC = () => {
         <Grid item xs={8} sm={6} className={classes.mainContainer}>
           <Grid container>
             <Grid item xs={12}>
-              <SignUpForm />
+              <SignUpForm onSignUp={onSignUp} />
             </Grid>
             <Grid item xs={12}>
               <Divider variant="fullWidth" className={classes.divider} />
